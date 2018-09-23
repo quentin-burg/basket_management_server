@@ -9,7 +9,8 @@
     "lint:fix": "eslint 'src/**/*.js' --fix",
     "prettier": "prettier --single-quote --trailing-comma es5 --write \"./src/**/*.js\" ",
     "precommit": "lint-staged",
-    "dev": "babel-watch ./index.js"
+    "dev": "babel-watch ./index.js",
+    "build": "babel src -d build"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "sequelize": "^4.38.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
     "babel-plugin-module-resolver": "^3.1.1",
