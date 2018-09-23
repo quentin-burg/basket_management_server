@@ -1,0 +1,11 @@
+stages:
+  - build
+
+prod_build:
+  image: node:8
+  stage: build
+  script:
+    - npm run install
+    - npm run build
+  only:
+    - master
