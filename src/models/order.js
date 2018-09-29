@@ -6,6 +6,10 @@ export default (sequelize, DataTypes) => {
       type         : DataTypes.UUID,
       defaultValue : DataTypes.UUIDV1,
     },
+    // TODO : improve that
+    // orderNumber : {
+    //   type : DataTypes.INTEGER,
+    // },
     articleId : {
       type : DataTypes.INTEGER,
     },

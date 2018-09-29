@@ -9,9 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     date : {
       type : DataTypes.STRING,
     },
-    userId : {
-      type : DataTypes.UUID,
-    },
   });
+  // TODO : remove that
+  Bill.associate = models => {
+    Bill.belongsTo(models.Order, { as : 'order' });
+  };
   return Bill;
 };
