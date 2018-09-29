@@ -16,7 +16,8 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "mocha": true
   },
   "settings": {
     "react": {
@@ -24,8 +25,12 @@
     }
   },
   // Enable custom plugin known as eslint-plugin-react
-  "plugins": ["react"],
+  "plugins": ["react",
+    // Mocha tester
+    "mocha"],
   "rules": {
+    // Mocha tester
+    "mocha/no-exclusive-tests": "error",
     // Default to single quotes and raise an error if something
     // else is used
     "quotes": [2, "single"],

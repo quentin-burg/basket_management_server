@@ -1,9 +1,13 @@
 // FIXME babelify API server
-
 import Sequelize from 'sequelize';
-import config from 'config';
+
 import path from 'path';
 import fs from 'fs';
+let config = require('config');
+
+if (process.env.NODE_ENV === 'test') {
+  config = require('testConfig');
+}
 
 const dbConfig = { ...config, dialect : 'postgres' };
 
