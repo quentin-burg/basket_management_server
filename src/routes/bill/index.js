@@ -31,15 +31,15 @@ apiRoutes.post('/', (req, res, next) => {
  * Get bills by orderId
  * Params: orderId
  */
-apiRoutes.get('/:orderId', (req, res, next) => {
+apiRoutes.get('/:inputId', (req, res, next) => {
   console.log('_INFO_ : Attempt to get bills by order');
-  const { orderId } = req.params;
-  if (!orderId) {
+  const { inputId } = req.params;
+  if (!inputId) {
     throw new Error('Missing orderId');
   }
   return Bill.findAll({
     where : {
-      orderId,
+      id : inputId,
     },
   })
     .then(bills =>
