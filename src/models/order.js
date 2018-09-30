@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
       type : DataTypes.REAL,
     },
     userId : {
-      type : DataTypes.INTEGER,
+      type : DataTypes.UUID,
     },
   });
   return Order;

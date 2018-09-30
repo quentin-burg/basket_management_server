@@ -9,12 +9,12 @@ const apiRoutes = express.Router();
  */
 apiRoutes.post('/', (req, res, next) => {
   console.log('_INFO_ : Attempt to create a new bill');
-  const { orderId } = req.body;
-  if (!orderId) {
-    throw new Error('OrderId is missing');
+  const { userId } = req.body;
+  if (!userId) {
+    throw new Error('UserId is missing');
   }
   return Bill.create({
-    orderId,
+    userId,
     date : new Date().toISOString(),
   })
     .then(bill =>
