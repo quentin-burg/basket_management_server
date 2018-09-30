@@ -45,27 +45,32 @@ apiRoutes.post('/', (req, res, next) => {
  */
 apiRoutes.put('/', (req, res, next) => {
   console.log('_INFO_ : Attempt to update an order');
-  const { articleId, userId, quantity } = req.body;
-  if (!articleId || !userId) {
-    throw new Error('Missing articleId or/and userId');
+  const { articles } = req.body;
+  if (articles.length === 0) {
+    throw new Error('Missing articles');
   }
-  if (!quantity) {
-    throw new Error('Missing quantity');
-  }
-  return Order.update(
-    { quantity },
-    {
-      where : {
-        $and : { userId, articleId },
-      },
-      returning : true,
-    }
+  return Promise.all(
+    articles.map(article => {
+      if (!article.quantity || !article.userId || !article.articleId) {
+        throw new Error(
+          'An article is invalid. quantity, userId, articleId required'
+        );
+      }
+      const { quantity, userId, articleId } = article;
+      return Order.update(
+        { quantity },
+        {
+          where : {
+            $and : { userId, articleId },
+          },
+        }
+      );
+    })
   )
-    .then(order =>
+    .then(() =>
       res.status(200).send({
         success : true,
-        msg     : 'Order updated',
-        order,
+        msg     : 'Articles updated',
       })
     )
     .catch(next);
