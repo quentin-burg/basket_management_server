@@ -8,6 +8,7 @@ import { Bill } from '../../../src/models';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../src/index');
+const assert = require('assert');
 
 chai.use(require('chai-uuid'));
 chai.use(chaiHttp);
@@ -51,8 +52,9 @@ describe('Bill', () => {
         const newBill = bill.get({ plain : true });
         const id = newBill.id;
         ser.get('/bill/' + id).end((err, res) => {
-          res.should.have.status(200);
-          res.body.bills[0].date.should.be.eql(dateNew);
+          console.log(res);
+          assert.equal(res.status, 200);
+          assert.equal(res.body.bills[0].date, dateNew);
           done();
         });
       });
@@ -60,7 +62,7 @@ describe('Bill', () => {
 
     it('id not found, it should return code 404', done => {
       ser.get('/bill/bd74c8da-4d9e-11e7-b114-b2f933d5fe66').end((err, res) => {
-        res.should.have.status(404);
+        assert.equal(res.status, 404);
         done();
       });
     });
