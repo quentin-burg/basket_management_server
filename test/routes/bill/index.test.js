@@ -10,7 +10,6 @@ const chaiHttp = require('chai-http');
 const server = require('../../../src/index');
 const assert = require('assert');
 
-chai.use(require('chai-uuid'));
 chai.use(chaiHttp);
 
 let ser;
