@@ -66,4 +66,23 @@ describe('Bill', () => {
       });
     });
   });
+
+
+  //POST TODO
+  describe('/post bill', () => {
+    it('userId valid, ', done => {
+      const dateNew = new Date().toISOString();
+      ser.post('/bill/').send({userId:1}).end(
+        (err, res, body) => {
+          assert.equal(res.status, 200);
+          Bill.findAll({
+            where : {}
+          }).then(bills => {
+            assert(bills[0]);
+            done();
+          });
+        }
+      );
+    });
+  });
 });
