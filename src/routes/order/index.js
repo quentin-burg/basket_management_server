@@ -83,7 +83,7 @@ apiRoutes.put('/', (req, res, next) => {
 apiRoutes.delete('/article', (req, res, next) => {
   console.log('_INFO_ : Attempt to delete an article from an order');
   const { userId, articleId } = req.body;
-  if (!userId && !articleId) {
+  if (!userId || !articleId) {
     throw new Error('Missing parameters');
   }
   return Order.destroy({
@@ -175,13 +175,25 @@ apiRoutes.get('/:userId/:articleId', (req, res, next) => {
       articleId,
     },
   })
-    .then(article =>
-      res.status(200).send({
-        success : true,
-        msg     : 'Got article',
-        article,
-      })
-    )
+    .then(article => {
+      if (article) {
+        res.status(200).send({
+          success : true,
+          msg     : 'Got articles from an order by userId',
+          article : article,
+        });
+      } else {
+        return res.status(404).send({
+          success : false,
+          msg     :
+            'order userId/articleId = "' +
+            userId +
+            '/' +
+            articleId +
+            '" not found',
+        });
+      }
+    })
     .catch(next);
 });
 export default apiRoutes;
