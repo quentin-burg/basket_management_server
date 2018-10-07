@@ -46,12 +46,12 @@ describe('Bill', () => {
       const dateNew = new Date().toISOString();
 
       Bill.create({
-        date : dateNew,
+        date   : dateNew,
+        userId : 'bd74c8da-4d9e-11e7-b114-b2f933d5fe66',
       }).then(bill => {
         const newBill = bill.get({ plain : true });
-        const id = newBill.id;
+        const id = newBill.userId;
         ser.get('/bill/' + id).end((err, res) => {
-          console.log(res);
           assert.equal(res.status, 200);
           assert.equal(res.body.bills[0].date, dateNew);
           done();
@@ -67,22 +67,49 @@ describe('Bill', () => {
     });
   });
 
-
   //POST TODO
   describe('/post bill', () => {
-    it('userId valid, ', done => {
-      const dateNew = new Date().toISOString();
-      ser.post('/bill/').send({userId:1}).end(
-        (err, res, body) => {
+    it('userId valid, returns code 200 and new bill exists with the entered id', done => {
+      ser
+        .post('/bill/')
+        .send({ userId : 'bd74c8da-4d9e-11e7-b114-b2f933d5fe66' })
+        .end((err, res) => {
           assert.equal(res.status, 200);
           Bill.findAll({
-            where : {}
+            where : {},
           }).then(bills => {
             assert(bills[0]);
+            assert(bills[0].userId === 'bd74c8da-4d9e-11e7-b114-b2f933d5fe66');
             done();
           });
-        }
-      );
+        });
+    });
+
+    it('userId invalid, code 500 + no bill created', done => {
+      ser
+        .post('/bill/')
+        .send({ userId : '5' })
+        .end((err, res) => {
+          assert.equal(res.status, 500);
+          Bill.findAll({
+            where : {},
+          }).then(bills => {
+            assert(!bills[0]);
+            done();
+          });
+        });
+    });
+
+    it('missing userId, code 500 + no bill created', done => {
+      ser.post('/bill/').end((err, res) => {
+        assert.equal(res.status, 500);
+        Bill.findAll({
+          where : {},
+        }).then(bills => {
+          assert(!bills[0]);
+          done();
+        });
+      });
     });
   });
 });

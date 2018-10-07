@@ -139,13 +139,20 @@ apiRoutes.get('/:userId', (req, res, next) => {
       userId,
     },
   })
-    .then(articles =>
-      res.status(200).send({
-        success : true,
-        msg     : 'Got articles from an order by userId',
-        articles,
-      })
-    )
+    .then(articles => {
+      if (articles.length > 0) {
+        res.status(200).send({
+          success : true,
+          msg     : 'Got articles from an order by userId',
+          articles,
+        });
+      } else {
+        return res.status(404).send({
+          success : false,
+          msg     : 'order userId="' + userId + '" not found',
+        });
+      }
+    })
     .catch(next);
 });
 

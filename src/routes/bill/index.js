@@ -14,8 +14,8 @@ apiRoutes.post('/', (req, res, next) => {
     throw new Error('UserId is missing');
   }
   return Bill.create({
-    userId,
-    date : new Date().toISOString(),
+    userId : userId,
+    date   : new Date().toISOString(),
   })
     .then(bill =>
       res.status(200).send({
@@ -28,8 +28,8 @@ apiRoutes.post('/', (req, res, next) => {
 });
 
 /**
- * Get bills by orderId
- * Params: orderId
+ * Get bills by id
+ * Params: billId
  */
 apiRoutes.get('/:inputId', (req, res, next) => {
   console.log('_INFO_ : Attempt to get bills by order');
@@ -39,7 +39,7 @@ apiRoutes.get('/:inputId', (req, res, next) => {
   }
   return Bill.findAll({
     where : {
-      id : inputId,
+      userId : inputId,
     },
   })
     .then(bills => {
